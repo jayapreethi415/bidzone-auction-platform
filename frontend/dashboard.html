@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <h2>⚖️ BidZone</h2>
+    <div>
+     <a href="index.html">Home</a>
+     <a href="auction.html">Auctions</a>
+     <a href="wishlist.html">My Wishlist ❤️</a>
+     <a href="mybids.html">My Bids</a>
+     <a href="#" onclick="logoutUser()">Logout</a>
+    </div>
+  </nav>
+
+  <section class="dashboard-hero">
+    <div class="hero-content">
+      <h1>Welcome to <span>BidZone</span></h1>
+      <p>The best place to buy and sell amazing products through real-time auctions.</p>
+      <p class="user-badge" id="userInfo"></p>
+      <a class="btn" href="auction.html">View Auctions →</a>
+    </div>
+  </section>
+
+  <section class="overview">
+    <h2>Dashboard Overview</h2>
+    <p>Here’s what’s happening with your account.</p>
+
+    <div class="cards">
+      <div class="card">
+        <h3>🔨 Active Auctions</h3>
+        <h1 id="activeCount">0</h1>
+        <p>Live auctions running</p>
+      </div>
+
+      <div class="card">
+        <h3>🏷️ My Bids</h3>
+        <h1 id="myBidsCount">0</h1>
+        <p>Bids you've placed</p>
+      </div>
+
+      <div class="card">
+        <h3>🏆 Won Auctions</h3>
+        <h1 id="wonCount">0</h1>
+        <p>Auctions you've won</p>
+      </div>
+
+      <div class="card">
+        <h3>❤️ Watchlist</h3>
+        <h1 id="watchlistCount">0</h1>
+        <p>Items you're watching</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (user) {
+      document.getElementById("userInfo").innerText =
+        `Logged in as ${user.name} (${user.role})`;
+    } else {
+      window.location.href = "login.html";
+    }
+
+    async function loadDashboardCounts() {
+      const response = await fetch("http://localhost:5050/api/auctions");
+      const auctions = await response.json();
+
+      const now = new Date();
+
+      const activeAuctions = auctions.filter(
+        auction => new Date(auction.endTime) > now
+      );
+
+      const myBids = auctions.filter(
+        auction => auction.highestBidder === user.name
+      );
+
+      const wonAuctions = auctions.filter(
+        auction =>
+          auction.highestBidder === user.name &&
+          new Date(auction.endTime) <= now
+      );
+
+      document.getElementById("activeCount").innerText = activeAuctions.length;
+      document.getElementById("myBidsCount").innerText = myBids.length;
+      document.getElementById("wonCount").innerText = wonAuctions.length;
+      document.getElementById("watchlistCount").innerText = 0;
+    }
+
+    function logoutUser() {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+
+    loadDashboardCounts();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Auctions</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <h2>⚖️ BidZone</h2>
+    <div>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="auction.html">Auctions</a>
+      <a href="wishlist.html">My Wishlist ❤️</a>
+      <a href="mybids.html">My Bids</a>
+      <a href="login.html">Logout</a>
+    </div>
+  </nav>
+
+  <section class="overview">
+
+    <div class="auction-header">
+      🔨 Live Auction Marketplace
+    </div>
+
+    <h2>Live Auctions</h2>
+    <p>Explore products and place your bids in real time.</p>
+
+    <div class="filters">
+      <input type="text" id="searchInput" placeholder="Search products..." onkeyup="loadAuctions()">
+
+      <select id="filterCategory" onchange="loadAuctions()">
+        <option value="All">All Categories</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Fashion">Fashion</option>
+        <option value="Books">Books</option>
+        <option value="Home">Home</option>
+        <option value="Collectibles">Collectibles</option>
+      </select>
+    </div>
+
+    <div class="auction-form" id="auctionForm">
+      <h3>Create Auction</h3>
+
+      <input type="text" id="title" placeholder="Product title">
+
+      <select id="category">
+        <option value="">Select Category</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Fashion">Fashion</option>
+        <option value="Books">Books</option>
+        <option value="Home">Home</option>
+        <option value="Collectibles">Collectibles</option>
+      </select>
+
+      <input type="text" id="description" placeholder="Product description">
+
+      <input type="number" id="startingBid" placeholder="Starting bid amount">
+
+      <input type="text" id="image" placeholder="Product image URL">
+
+      <input type="datetime-local" id="endTime">
+
+      <button onclick="createAuction()">Create Auction</button>
+    </div>
+
+    <div class="auction-list" id="auctionList"></div>
+
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
