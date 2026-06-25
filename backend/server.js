@@ -23,8 +23,9 @@ app.get("/", (req, res) => {
   res.send("BidZone backend running...");
 });
 
-mongoose
-  .connect(process.env.MONGO_URI)
+console.log("Using DB:", process.env.MONGO_URI);
+
+mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log("MongoDB Connected");
     app.listen(process.env.PORT, () => {
