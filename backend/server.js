@@ -9,7 +9,7 @@ const auctionRoutes = require("./routes/auctionRoutes");
 const app = express();
 
 app.use(cors({
-  origin: "http://127.0.0.1:5500",
+  origin: "https://bidzone-frontend-z0w6.onrender.com"
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
