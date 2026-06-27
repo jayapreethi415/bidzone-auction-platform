@@ -69,7 +69,7 @@
     }
 
     async function loadDashboardCounts() {
-      const response = await fetch("http://localhost:5050/api/auctions");
+      const response = await fetch("https://bidzone-auction-platform.onrender.com");
       const auctions = await response.json();
 
       const now = new Date();
