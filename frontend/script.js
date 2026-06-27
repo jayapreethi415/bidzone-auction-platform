@@ -5,7 +5,7 @@ async function registerUser() {
     const password = document.getElementById("password").value;
     const role = document.getElementById("role").value;
 
-    const response = await fetch("https://bidzone-auction-platform.onrender.com", {
+    const response = await fetch("https://bidzone-auction-platform.onrender.com/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password, role })
@@ -25,11 +25,19 @@ async function loginUser() {
     const email = document.getElementById("loginEmail").value;
     const password = document.getElementById("loginPassword").value;
 
-    const response = await fetch("https://bidzone-auction-platform.onrender.com", {
+  const response = await fetch(
+    "https://bidzone-auction-platform.onrender.com/api/auth/login",
+    {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password })
-    });
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email,
+        password
+      })
+    }
+);
 
     const data = await response.json();
     alert(data.message);
@@ -60,7 +68,7 @@ async function createAuction() {
 
     const user = JSON.parse(localStorage.getItem("user"));
 
-    const response = await fetch("https://bidzone-auction-platform.onrender.com", {
+    const response = await fetch("https://bidzone-auction-platform.onrender.com/api/auctions/create", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -85,7 +93,7 @@ async function createAuction() {
 }
 
 async function loadAuctions() {
-  const response = await fetch("https://bidzone-auction-platform.onrender.com");
+  const response = await fetch("https://bidzone-auction-platform.onrender.com/api/auctions");
   const auctions = await response.json();
 
   const auctionList = document.getElementById("auctionList");
@@ -160,14 +168,19 @@ async function placeBid(auctionId, currentBid) {
 
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const response = await fetch(`https://bidzone-auction-platform.onrender.com}`, {
+ const response = await fetch(
+  `https://bidzone-auction-platform.onrender.com/api/auctions/bid/${auctionId}`,
+  {
     method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify({
       bidAmount,
       bidderName: user ? user.name : "Unknown"
     })
-  });
+  }
+);
 
   const data = await response.json();
   alert(data.message);
@@ -176,7 +189,7 @@ async function placeBid(auctionId, currentBid) {
 }
 
 async function loadMyBids() {
-  const response = await fetch("https://bidzone-auction-platform.onrender.com");
+  const response = await fetch("https://bidzone-auction-platform.onrender.com/api/auctions");
   const auctions = await response.json();
 
   const myBidsList = document.getElementById("myBidsList");
@@ -274,7 +287,7 @@ function controlAuctionForm() {
 }
 
 async function loadMyAuctions() {
-  const response = await fetch("https://bidzone-auction-platform.onrender.com");
+  const response = await fetch("https://bidzone-auction-platform.onrender.com/api/auctions");
   const auctions = await response.json();
 
   const myAuctionsList = document.getElementById("myAuctionsList");
@@ -325,9 +338,12 @@ async function deleteAuction(auctionId) {
   const confirmDelete = confirm("Are you sure you want to delete this auction?");
   if (!confirmDelete) return;
 
-  const response = await fetch(`https://bidzone-auction-platform.onrender.com}`, {
+const response = await fetch(
+  `https://bidzone-auction-platform.onrender.com/api/auctions/${auctionId}`,
+  {
     method: "DELETE"
-  });
+  }
+);
 
   const data = await response.json();
   alert(data.message);
@@ -343,7 +359,9 @@ async function editAuction(auctionId, oldTitle, oldDescription, oldBid, oldImage
 
   if (!title || !description || !startingBid || !image) return;
 
-  const response = await fetch(`https://bidzone-auction-platform.onrender.com}`, {
+const response = await fetch(
+  `https://bidzone-auction-platform.onrender.com/api/auctions/${auctionId}`,
+  {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
@@ -354,7 +372,8 @@ async function editAuction(auctionId, oldTitle, oldDescription, oldBid, oldImage
       startingBid,
       image
     })
-  });
+  }
+);
 
   const data = await response.json();
   alert(data.message);
@@ -376,7 +395,7 @@ function toggleWishlist(auctionId) {
   window.location.reload();
 }
 async function loadWishlist() {
-  const response = await fetch("https://bidzone-auction-platform.onrender.com");
+  const response = await fetch("https://bidzone-auction-platform.onrender.com/api/auctions");
   const auctions = await response.json();
 
   const wishlistList = document.getElementById("wishlistList");

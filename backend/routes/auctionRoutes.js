@@ -66,7 +66,7 @@ router.put("/bid/:id", async (req, res) => {
     });
   }
 });
-module.exports = router;
+
 router.put("/:id", async (req, res) => {
   try {
     const updatedAuction = await Auction.findByIdAndUpdate(
@@ -98,3 +98,4 @@ router.delete("/:id", async (req, res) => {
     });
   }
 });
+module.exports = router;
